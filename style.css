@@ -1,0 +1,1098 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Cinzel:wght@600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Cinzel', serif;
+  background: #0a0e1a;
+}
+
+/* ---------- ฉากทั่วไป ---------- */
+.scene {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+.scene.active {
+  display: flex;
+}
+
+/* ---------- ฉากเริ่มเกม ---------- */
+.scene-start {
+  /* วางรูปพื้นหลังจริงตรงนี้ เมื่อมีไฟล์แล้ว */
+  background-image: url('images/bg-start.png');
+  background-color: #101733; /* สีสำรองถ้ายังไม่มีรูป */
+  position: relative;
+}
+
+.scene-start #start-btn {
+  margin-top: 45vh;
+}
+
+.title-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.gem {
+  color: #c084fc;
+  font-size: 2.5rem;
+  text-shadow: 0 0 15px #a855f7, 0 0 30px #a855f7;
+  margin-bottom: -10px;
+  animation: pulse 2.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% { text-shadow: 0 0 15px #a855f7, 0 0 30px #a855f7; }
+  50% { text-shadow: 0 0 25px #d8b4fe, 0 0 45px #c084fc; }
+}
+
+.game-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  font-weight: 700;
+  letter-spacing: 6px;
+  color: #f6c453;
+  -webkit-text-stroke: 2px #7c2d12;
+  text-shadow:
+    0 0 10px rgba(246, 196, 83, 0.6),
+    3px 3px 0 #5b21b6,
+    6px 6px 10px rgba(0,0,0,0.6);
+  padding: 10px 30px;
+}
+
+.subtitle-banner {
+  background: linear-gradient(180deg, #6d28d9, #4c1d95);
+  border: 2px solid #f6c453;
+  color: #fff;
+  font-size: clamp(0.8rem, 1.6vw, 1.1rem);
+  letter-spacing: 3px;
+  padding: 8px 30px;
+  border-radius: 4px;
+  margin-top: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+/* ---------- ปุ่มเริ่มเกม (สไตล์พิกเซล) ---------- */
+.pixel-btn {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 1.4rem;
+  letter-spacing: 3px;
+  color: #fff;
+  background: linear-gradient(180deg, #7c3aed, #4c1d95);
+  border: 3px solid #f6c453;
+  border-radius: 6px;
+  padding: 16px 55px;
+  cursor: pointer;
+  box-shadow:
+    inset 0 0 0 2px #2e1065,
+    0 6px 0 #2e1065,
+    0 8px 15px rgba(0,0,0,0.5);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.pixel-btn:hover {
+  background: linear-gradient(180deg, #8b5cf6, #5b21b6);
+}
+
+.pixel-btn:active {
+  transform: translateY(4px);
+  box-shadow:
+    inset 0 0 0 2px #2e1065,
+    0 2px 0 #2e1065,
+    0 4px 8px rgba(0,0,0,0.5);
+}
+
+/* ---------- ปุ่มไอคอน มุมจอ ---------- */
+.icon-btn {
+  position: absolute;
+  bottom: 25px;
+  width: 50px;
+  height: 50px;
+  font-size: 1.3rem;
+  color: #f6c453;
+  background: linear-gradient(180deg, #6d28d9, #4c1d95);
+  border: 2px solid #f6c453;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn-left { left: 25px; }
+.icon-btn-right { right: 25px; }
+
+.sound-toggle-btn {
+  z-index: 15;
+}
+
+/* ================== คัตซีน (เปิด/ปิดเรื่อง) ================== */
+
+.scene-cutscene {
+  background: #0a0e1a;
+  position: relative;
+}
+
+.cutscene-panel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+  opacity: 0;
+  transform: scale(1.04);
+  pointer-events: none;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  padding: 20px;
+}
+
+.cutscene-panel.active {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.cutscene-art {
+  width: min(70vw, 560px);
+  max-height: 55vh;
+  border: 3px solid #f6c453;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  background: #000;
+}
+
+.cutscene-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+}
+
+#outro-restart-btn {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: none;
+}
+
+#outro-restart-btn.show {
+  display: inline-block;
+}
+
+.cutscene-text {
+  max-width: 640px;
+  text-align: center;
+  color: #fff;
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  line-height: 1.7;
+  background: rgba(24, 12, 44, 0.85);
+  border: 2px solid #f6c453;
+  border-radius: 10px;
+  padding: 14px 28px;
+}
+
+.cutscene-final {
+  gap: 34px;
+}
+
+.cutscene-skip {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 20;
+  background: rgba(0,0,0,0.5);
+  border: 2px solid #f6c453;
+  color: #fff;
+  font-family: 'Cinzel', serif;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  padding: 8px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.cutscene-skip:hover {
+  background: rgba(0,0,0,0.75);
+}
+
+/* ---------- ฉากเลือกด่าน (World Map) ---------- */
+.scene-map {
+  /* วางรูปพื้นหลังแผนที่จริงตรงนี้ เมื่อมีไฟล์แล้ว */
+  background-image: url('images/bg-map.png');
+  background-color: #10152b;
+  justify-content: flex-start;
+  padding-top: 40px;
+  gap: 40px;
+}
+
+.map-title-banner {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: 6px;
+  color: #f6c453;
+  background: linear-gradient(180deg, #4c1d95, #2e1065);
+  border: 3px solid #f6c453;
+  border-radius: 6px;
+  padding: 10px 50px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+}
+
+.stage-path {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  align-items: end;
+  width: 100%;
+  margin-top: auto;
+  margin-bottom: 60px;
+}
+
+.stage-node {
+  justify-self: center;
+}
+
+.stage-path::before {
+  content: '';
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 38px;
+  height: 4px;
+  background-image: radial-gradient(circle, #f6c453 2px, transparent 2.5px);
+  background-size: 16px 4px;
+  background-repeat: repeat-x;
+  z-index: 0;
+}
+
+.stage-node {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Cinzel', serif;
+}
+
+.stage-shield {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(180deg, #2563eb, #1e3a8a);
+  border: 3px solid #f6c453;
+  border-radius: 12px 12px 30% 30%;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.stage-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #fff;
+  padding: 5px 14px;
+  border-radius: 4px;
+  border: 2px solid #f6c453;
+  white-space: nowrap;
+}
+
+.stage-node:not(.locked):hover .stage-shield {
+  transform: translateY(-2px);
+}
+
+.stage-node.selected .stage-shield {
+  transform: translateY(-6px);
+  box-shadow: 0 0 0 4px #fff, 0 0 18px 4px #f6c453;
+}
+
+.stage-node.locked {
+  cursor: not-allowed;
+}
+
+.stage-node.locked .stage-shield {
+  background: linear-gradient(180deg, #4b5563, #1f2937);
+  color: #9ca3af;
+  filter: grayscale(0.6);
+}
+
+.stage-node.locked::after {
+  content: '🔒';
+  position: absolute;
+  top: 18px;
+  font-size: 1.1rem;
+}
+
+.pixel-btn-small {
+  font-size: 1rem;
+  padding: 10px 30px;
+}
+
+.reset-link {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.5);
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  cursor: pointer;
+  z-index: 5;
+}
+
+.reset-link:hover {
+  color: #f6c453;
+}
+
+/* ================== ฉากต่อสู้ในด่าน (ใช้ร่วมกันทุกด่าน) ================== */
+
+.scene-forest { background-image: url('images/bg-forest.jpg'); background-color: #16321f; position: relative; justify-content: flex-start; }
+.scene-city   { background-image: url('images/bg-city.jpg');   background-color: #4a3520; position: relative; justify-content: flex-start; }
+.scene-night  { background-image: url('images/bg-night.jpg');  background-color: #14102b; position: relative; justify-content: flex-start; }
+.scene-desert { background-image: url('images/bg-desert.jpg'); background-color: #7c5a2e; position: relative; justify-content: flex-start; }
+.scene-castle { background-image: url('images/bg-castle.jpg'); background-color: #1f1a3d; position: relative; justify-content: flex-start; }
+
+/* ทรงเงาฉากหลัง (แทนรูปภาพ ใช้ clip-path วาดเป็นภูเขา/ตึก/สุสาน/เนินทราย/ปราสาท) */
+.scenery {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 20px;
+  height: 130px;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+.scenery.forest {
+  background: #16321f;
+  clip-path: polygon(0 100%, 4% 45%, 10% 100%, 16% 30%, 23% 100%, 29% 55%, 36% 100%, 43% 25%, 51% 100%, 59% 45%, 66% 100%, 73% 30%, 81% 100%, 88% 50%, 95% 100%, 100% 35%, 100% 100%);
+}
+
+.scenery.city {
+  background: #2b2116;
+  clip-path: polygon(0 100%,0 60%,6% 60%,6% 40%,12% 40%,12% 70%,18% 70%,18% 30%,24% 30%,24% 65%,30% 65%,30% 45%,36% 45%,36% 75%,42% 75%,42% 20%,48% 20%,48% 60%,54% 60%,54% 35%,60% 35%,60% 70%,66% 70%,66% 50%,72% 50%,72% 25%,78% 25%,78% 65%,84% 65%,84% 40%,90% 40%,90% 70%,96% 70%,96% 55%,100% 55%,100% 100%);
+}
+
+.scenery.night {
+  background: #0b0820;
+  clip-path: polygon(0 100%,0 70%,10% 55%,20% 75%,30% 50%,40% 80%,50% 60%,60% 85%,70% 55%,80% 78%,90% 60%,100% 75%,100% 100%);
+}
+
+.scenery.desert {
+  background: #6e4520;
+  clip-path: polygon(0 100%,0 65%,15% 75%,30% 55%,45% 78%,60% 60%,75% 80%,90% 58%,100% 72%,100% 100%);
+}
+
+.scenery.castle {
+  background: #14102b;
+  clip-path: polygon(0 100%,0 50%,8% 50%,8% 35%,14% 35%,14% 50%,22% 50%,22% 20%,26% 20%,26% 10%,30% 10%,30% 20%,34% 20%,34% 50%,42% 50%,42% 30%,46% 30%,46% 50%,54% 50%,54% 15%,58% 15%,58% 5%,62% 5%,62% 15%,66% 15%,66% 50%,74% 50%,74% 35%,80% 35%,80% 50%,88% 50%,88% 25%,92% 25%,92% 50%,100% 50%,100% 100%);
+}
+
+/* ================== พื้นหลังภาพจริงที่เลื่อนได้ (ต่อจากรูปที่ผู้ใช้อัปโหลด) ================== */
+.parallax-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-repeat: repeat-x;
+  background-position: left center;
+  pointer-events: none;
+}
+
+/* บรรยากาศแต่ละด่าน (ไม่ต้องใช้รูปภาพ วาดด้วย gradient จุดๆ ล้วน) */
+.ambience {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.ambience.stars {
+  background-image:
+    radial-gradient(2px 2px at 10% 15%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 25% 30%, #fff, transparent),
+    radial-gradient(2px 2px at 42% 12%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 58% 25%, #fff, transparent),
+    radial-gradient(2px 2px at 73% 10%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 88% 20%, #fff, transparent),
+    radial-gradient(2px 2px at 95% 35%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 15% 45%, #fff, transparent);
+  animation: twinkle 2.4s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+  0%   { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+
+.ambience.fireflies {
+  background-image:
+    radial-gradient(3px 3px at 20% 55%, #fef08a, transparent),
+    radial-gradient(2.5px 2.5px at 45% 40%, #fef08a, transparent),
+    radial-gradient(3px 3px at 70% 60%, #fef08a, transparent),
+    radial-gradient(2.5px 2.5px at 85% 45%, #fef08a, transparent);
+  animation: firefly-drift 5s ease-in-out infinite;
+  opacity: 0.85;
+}
+
+@keyframes firefly-drift {
+  0%, 100% { transform: translate(0, 0); opacity: 0.5; }
+  50% { transform: translate(10px, -14px); opacity: 1; }
+}
+
+.ambience.embers {
+  background-image:
+    radial-gradient(2.5px 2.5px at 15% 70%, #fb923c, transparent),
+    radial-gradient(2px 2px at 35% 55%, #f6c453, transparent),
+    radial-gradient(2.5px 2.5px at 60% 65%, #fb923c, transparent),
+    radial-gradient(2px 2px at 80% 50%, #f6c453, transparent),
+    radial-gradient(2.5px 2.5px at 92% 68%, #fb923c, transparent);
+  animation: ember-rise 4s ease-in infinite;
+  opacity: 0.8;
+}
+
+@keyframes ember-rise {
+  0%   { transform: translateY(0); opacity: 0.9; }
+  100% { transform: translateY(-60px); opacity: 0; }
+}
+
+.ambience.haze {
+  background: linear-gradient(180deg, rgba(255,230,180,0) 60%, rgba(255,200,140,0.18) 100%);
+  animation: haze-shimmer 3s ease-in-out infinite alternate;
+}
+
+@keyframes haze-shimmer {
+  0%   { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+/* ================== ลูกเล่นเพิ่มเติม: สั่นจอ / เตือนเวลาใกล้หมด / คอมโบ / เลขลอย ================== */
+
+/* จอสั่นตอนอสูรจู่โจมโดน (ตอบผิด/หมดเวลา) ให้รู้สึกมีแรงกระแทก */
+.battle-field.screen-shake {
+  animation: screen-shake-anim 0.35s ease;
+}
+
+@keyframes screen-shake-anim {
+  0%   { transform: translate(0, 0); }
+  15%  { transform: translate(-10px, 4px); }
+  30%  { transform: translate(8px, -5px); }
+  45%  { transform: translate(-7px, 3px); }
+  60%  { transform: translate(6px, -3px); }
+  75%  { transform: translate(-4px, 2px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* แถบเวลาเตือนตอนใกล้หมด: กะพริบแดงเร็วขึ้น ให้รู้สึกตื่นเต้น/เร่งรีบ */
+.time-bar.time-low {
+  animation: time-low-pulse 0.5s ease-in-out infinite;
+  border-color: #ef4444;
+}
+
+@keyframes time-low-pulse {
+  0%, 100% { box-shadow: 0 0 0 rgba(239, 68, 68, 0); }
+  50%      { box-shadow: 0 0 14px 3px rgba(239, 68, 68, 0.85); }
+}
+
+/* ป้ายคอมโบ ลอยขึ้นตอนตอบถูกติดกันหลายข้อ */
+.combo-badge {
+  position: absolute;
+  left: 50%;
+  top: -6px;
+  transform: translate(-50%, 0) scale(0.6);
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: #fde68a;
+  text-shadow: 0 0 10px #f59e0b, 0 2px 3px rgba(0,0,0,0.7);
+  pointer-events: none;
+  opacity: 0;
+  z-index: 7;
+  white-space: nowrap;
+}
+
+.combo-badge.show {
+  animation: combo-pop 0.7s ease-out forwards;
+}
+
+@keyframes combo-pop {
+  0%   { opacity: 0; transform: translate(-50%, 10px) scale(0.5); }
+  25%  { opacity: 1; transform: translate(-50%, -6px) scale(1.15); }
+  40%  { opacity: 1; transform: translate(-50%, -6px) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -28px) scale(1); }
+}
+
+/* เลข/ไอคอนลอยขึ้นตอนเสียหัวใจ ให้เห็นชัดว่าโดนหักแต้ม */
+.float-indicator {
+  position: absolute;
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: #ef4444;
+  text-shadow: 0 0 8px rgba(239,68,68,0.9), 0 2px 2px rgba(0,0,0,0.6);
+  pointer-events: none;
+  z-index: 8;
+  animation: float-up-fade 0.9s ease-out forwards;
+}
+
+@keyframes float-up-fade {
+  0%   { opacity: 0; transform: translateY(0) scale(0.8); }
+  20%  { opacity: 1; transform: translateY(-10px) scale(1.1); }
+  100% { opacity: 0; transform: translateY(-55px) scale(1); }
+}
+
+/* HUD หัวใจ มุมซ้ายบน */
+.battle-hud {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  z-index: 5;
+}
+
+.hearts {
+  display: flex;
+  gap: 6px;
+}
+
+.hearts .heart {
+  font-size: 1.8rem;
+  color: #ef4444;
+  text-shadow: 0 0 8px rgba(239, 68, 68, 0.8);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.hearts .heart.heart-lost {
+  color: #4b5563;
+  text-shadow: none;
+  opacity: 0.5;
+  transform: scale(0.85);
+}
+
+.progress-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.95rem;
+  color: #fff;
+  background: rgba(0,0,0,0.5);
+  padding: 4px 12px;
+  border-radius: 4px;
+  border: 1px solid #f6c453;
+}
+
+/* สนามต่อสู้ (อยู่ล่างสุดของจอ) */
+.battle-field {
+  order: 2;
+  position: relative;
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 340px; /* กันไม่ให้พื้นที่เหลือน้อยเกินไปจนตัวละคร (สูงสุด 390px) ยื่นขึ้นไปทับกล่องคำถาม */
+  margin-bottom: 15px;
+}
+
+.wizard-sprite,
+.monster-sprite {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: left 0.6s ease, right 0.6s ease, transform 0.3s ease;
+  z-index: 2;
+}
+
+.wizard-sprite {
+  width: 250px;
+  height: 345px;
+  bottom: -10px;
+  left: 8%;
+}
+
+.monster-sprite {
+  width: 430px;
+  height: 390px;
+  bottom: -10px;
+  right: 8%;
+}
+
+.sprite-art {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.sprite-art svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 8px 10px rgba(0,0,0,0.5));
+}
+
+.sprite-art .sprite-state {
+  filter: drop-shadow(0 6px 4px rgba(0,0,0,0.4));
+}
+
+/* หลอดพลังชีวิตอสูร ลอยอยู่เหนือหัว */
+.monster-hp-bar {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 160px;
+  height: 16px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 2px solid #f6c453;
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 3;
+}
+
+.monster-hp-fill {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(180deg, #ef4444, #991b1b);
+  transition: width 0.4s ease;
+}
+
+/* ================== ระบบ "เดิน" แบบ 2D ================== */
+/* หมายเหตุ: เมื่อมีสไปรท์จริง (real sprite sheet) ท่าเดินจะมาจากเฟรมภาพเอง
+   จึงไม่ใช้ท่าโยกตัวแบบ CSS (walk-cycle) กับ .real-art ซ้อนทับอีก */
+
+.wizard-sprite.walking:not(.has-real-art),
+.monster-sprite.walking:not(.has-real-art) {
+  animation: walk-cycle 0.4s ease-in-out infinite;
+}
+
+@keyframes walk-cycle {
+  0%   { transform: translateY(0) rotate(0deg); }
+  25%  { transform: translateY(-8px) rotate(-2.5deg); }
+  50%  { transform: translateY(0) rotate(0deg); }
+  75%  { transform: translateY(-5px) rotate(2.5deg); }
+  100% { transform: translateY(0) rotate(0deg); }
+}
+
+/* ---------- สไปรท์จริง (real sprite sheet) ไฟล์เดียว: ยืนนิ่ง = ค้างเฟรมแรก, เดิน = เล่นแอนิเมชัน ---------- */
+.sprite-play {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: auto 100%;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  animation-play-state: paused;
+}
+
+.wizard-sprite.walking .sprite-play,
+.monster-sprite.walking .sprite-play {
+  animation-play-state: running;
+}
+
+.sprite-play.frames-8 { background-size: 800% 100%; animation: spritePlay8 0.75s steps(7) infinite; }
+.sprite-play.frames-9 { background-size: 900% 100%; animation: spritePlay9 0.7s steps(8) infinite; }
+.sprite-play.frames-20 { background-size: 2000% 100%; animation: spritePlay20 1.6s steps(19) infinite; }
+
+/* ---------- สไปรท์จริง (real sprite sheet) เล่นแอนิเมชันแบบขยับเฟรม ---------- */
+/* ระบบหลายสถานะ: idle / walk / cast(หรือ special) / hit ซ้อนกันอยู่ในกรอบเดียว
+   สลับโชว์ทีละสถานะด้วยคลาส .active (คุมจาก JS ผ่าน setCharState) — เก็บไว้เผื่อใช้อนาคต ตอนนี้ไม่ได้ใช้งาน */
+.sprite-state {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: auto 100%;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  opacity: 0;
+  animation-play-state: paused;
+  pointer-events: none;
+}
+
+.sprite-state.active {
+  opacity: 1;
+  animation-play-state: running;
+}
+
+.sprite-state.frames-7 { background-size: 700% 100%; animation: spritePlay7 0.8s steps(6) infinite; }
+.sprite-state.frames-8 { background-size: 800% 100%; animation: spritePlay8 0.75s steps(7) infinite; }
+.sprite-state.frames-9 { background-size: 900% 100%; animation: spritePlay9 0.7s steps(8) infinite; }
+.sprite-state.frames-16 { background-size: 1600% 100%; animation: spritePlay16 0.6s steps(15) infinite; }
+.sprite-state.frames-20 { background-size: 2000% 100%; animation: spritePlay20 0.85s steps(19) infinite; }
+.sprite-state.frames-24 { background-size: 2400% 100%; animation: spritePlay24 0.9s steps(23) infinite; }
+
+/* ท่าโจมตี (attack/special) เล่นแค่รอบเดียวจบ ไม่วนซ้ำ เพราะเป็นแอนิเมชันสั้นๆ ตอนอสูรพุ่งเข้าใส่ (ตรงกับช่วงเวลาที่ JS โชว์ท่านี้ ~450ms) */
+.sprite-state[data-state="special"].frames-20 { animation: spritePlay20 0.45s steps(19) 1; }
+.sprite-state[data-state="death"].frames-24 { background-size: 2400% 100%; animation: spritePlay24 0.9s steps(23) 1 forwards; }
+.sprite-state[data-state="hit"].frames-16 { animation: spritePlay16 0.3s steps(15) 1; }
+
+@keyframes spritePlay7 { from { background-position-x: 0%; } to { background-position-x: 100%; } }
+@keyframes spritePlay8 { from { background-position-x: 0%; } to { background-position-x: 100%; } }
+@keyframes spritePlay9 { from { background-position-x: 0%; } to { background-position-x: 100%; } }
+@keyframes spritePlay16 { from { background-position-x: 0%; } to { background-position-x: 100%; } }
+@keyframes spritePlay20 { from { background-position-x: 0%; } to { background-position-x: 100%; } }
+@keyframes spritePlay24 { from { background-position-x: 0%; } to { background-position-x: 100%; } }
+
+/* โทนสีต่อมอนสเตอร์แต่ละด่าน (ใช้ภาพอสูรตัวเดียวกัน ปรับสีให้ต่างกันด้วย CSS filter) */
+.monster-sprite[data-monster="forest"] .sprite-art { filter: hue-rotate(110deg) saturate(1.1); }
+.monster-sprite[data-monster="city"]   .sprite-art { filter: grayscale(0.55) brightness(0.9); }
+.monster-sprite[data-monster="night"]  .sprite-art { filter: hue-rotate(190deg) saturate(0.7) brightness(0.85); }
+.monster-sprite[data-monster="desert"] .sprite-art { filter: hue-rotate(35deg) saturate(1.2); }
+.monster-sprite[data-monster="castle"] .sprite-art { filter: none; }
+
+.monster-sprite.monster-lunge {
+  animation: monster-lunge 0.4s ease;
+}
+
+@keyframes monster-lunge {
+  0%   { transform: translateX(0) scale(1); }
+  35%  { transform: translateX(-38px) scale(1.12); }
+  60%  { transform: translateX(-38px) scale(1.12); }
+  100% { transform: translateX(0) scale(1); }
+}
+
+/* พื้นเลื่อน */
+.ground-scroll {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 6px;
+  height: 14px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.35) 0 8px,
+    transparent 8px 46px
+  );
+  background-repeat: repeat-x;
+  opacity: 0;
+  z-index: 1;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  animation: ground-scroll-move 0.4s linear infinite;
+  animation-play-state: paused;
+}
+
+.ground-scroll.scrolling {
+  opacity: 0;
+  animation-play-state: running;
+}
+
+@keyframes ground-scroll-move {
+  from { background-position-x: 0; }
+  to   { background-position-x: -46px; }
+}
+
+.scene.bg-walk .scenery {
+  animation: bg-pan 1.2s linear infinite;
+}
+
+@keyframes bg-pan {
+  from { background-position-x: 0; }
+  to   { background-position-x: -20px; }
+}
+
+/* ตัวนับเวลาต่อคำถาม (มอนสเตอร์เดินเข้ามาเรื่อยๆ = เวลากำลังหมด) */
+.time-bar {
+  width: 260px;
+  height: 12px;
+  background: rgba(0,0,0,0.5);
+  border: 2px solid #f6c453;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.time-bar-fill {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, #22c55e, #f6c453, #ef4444);
+  transform-origin: left;
+}
+
+/* เอฟเฟกต์ตอนโดนโจมตี */
+.monster-sprite.monster-hit {
+  animation: hit-flash 0.4s ease;
+}
+
+.wizard-sprite.wizard-hit {
+  animation: hit-flash 0.4s ease;
+}
+
+@keyframes hit-flash {
+  0%   { filter: brightness(1); }
+  40%  { filter: brightness(2.5) drop-shadow(0 0 15px #ef4444); }
+  100% { filter: brightness(1); }
+}
+
+.wizard-sprite.wizard-cast {
+  animation: cast-bounce 0.5s ease;
+}
+
+@keyframes cast-bounce {
+  0%   { transform: translateY(0) scale(1); }
+  30%  { transform: translateY(-18px) scale(1.05); }
+  55%  { transform: translateY(2px) scale(0.98); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+.monster-sprite.monster-die {
+  animation: monster-die-anim 0.5s ease forwards;
+}
+
+@keyframes monster-die-anim {
+  0%   { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0.3) translateY(35px); opacity: 0; }
+}
+
+/* ---------- ลูกแสงคาถาที่นักเวทย์ยิงใส่อสูรตอนตอบถูก ---------- */
+.spell-bolt {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  margin-left: -10px;
+  margin-top: -10px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fffbea 0%, #fde68a 25%, #c084fc 55%, #a855f7 75%, transparent 100%);
+  box-shadow: 0 0 10px 4px #fde68a, 0 0 26px 10px rgba(168, 85, 247, 0.65);
+  z-index: 6;
+  pointer-events: none;
+  opacity: 0.4;
+  transform: translate(0, 0) scale(0.6);
+  transition: transform 0.26s cubic-bezier(0.25, 0.6, 0.35, 1), opacity 0.26s ease;
+}
+
+.spell-burst {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  margin-left: -30px;
+  margin-top: -30px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fffbea 0%, #fde68a 25%, #f59e0b 50%, #a855f7 70%, transparent 80%);
+  z-index: 6;
+  pointer-events: none;
+  animation: spell-burst-anim 0.42s ease-out forwards;
+}
+
+@keyframes spell-burst-anim {
+  0%   { transform: scale(0.15); opacity: 1; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+/* ---------- เอฟเฟกต์กระแทกตอนอสูรจู่โจมโดนนักเวทย์ (ตอบผิด/หมดเวลา) ---------- */
+.impact-spark {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  margin-left: -35px;
+  margin-top: -35px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 0%, #fecaca 20%, #ef4444 50%, #7f1d1d 75%, transparent 85%);
+  z-index: 6;
+  pointer-events: none;
+  animation: impact-spark-anim 0.38s ease-out forwards;
+}
+
+@keyframes impact-spark-anim {
+  0%   { transform: scale(0.2) rotate(0deg); opacity: 1; }
+  100% { transform: scale(1.6) rotate(25deg); opacity: 0; }
+}
+
+/* กล่องคำถาม (อยู่บนสุดของจอ) */
+.quiz-box {
+  position: relative;
+  order: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  margin-bottom: 0;
+  z-index: 5;
+}
+
+.thai-word {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.4rem, 3.4vw, 2.1rem);
+  font-weight: 700;
+  color: #f6c453;
+  background: rgba(24, 12, 44, 0.85);
+  border: 3px solid #f6c453;
+  border-radius: 10px;
+  padding: 8px 30px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+}
+
+.answer-options {
+  display: flex;
+  gap: 16px;
+}
+
+.answer-btn {
+  font-family: 'Cinzel', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(180deg, #2563eb, #1e3a8a);
+  border: 3px solid #f6c453;
+  border-radius: 10px;
+  padding: 10px 28px;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #1e293b, 0 6px 10px rgba(0,0,0,0.4);
+  transition: transform 0.1s ease;
+}
+
+.answer-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.answer-btn:disabled {
+  cursor: default;
+}
+
+.answer-btn.correct-flash {
+  background: linear-gradient(180deg, #22c55e, #15803d);
+  box-shadow: 0 0 20px 4px #22c55e;
+}
+
+.answer-btn.wrong-flash {
+  background: linear-gradient(180deg, #ef4444, #991b1b);
+  animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
+}
+
+/* ป้ายผ่านด่าน / ด่านล้มเหลว */
+.stage-clear-overlay,
+.stage-fail-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.stage-clear-overlay.show,
+.stage-fail-overlay.show {
+  display: flex;
+}
+
+.stage-clear-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  background: linear-gradient(180deg, #4c1d95, #2e1065);
+  border: 3px solid #f6c453;
+  border-radius: 10px;
+  padding: 40px 60px;
+}
+
+.stage-clear-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #22c55e;
+}
+
+.stage-fail-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ef4444;
+}
+
+/* ดาวให้คะแนนตอนผ่านด่าน (ตามจำนวนหัวใจที่เหลือ) เด้งออกมาทีละดวงให้รู้สึกตื่นเต้น */
+.stage-clear-stars {
+  display: flex;
+  gap: 10px;
+}
+
+.stage-clear-stars .star {
+  font-size: 2.6rem;
+  color: #3f3560;
+  text-shadow: 0 2px 3px rgba(0,0,0,0.5);
+  transform: scale(0);
+  opacity: 0;
+}
+
+.stage-clear-overlay.show .stage-clear-stars .star {
+  animation: star-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.stage-clear-stars .star.earned {
+  color: #fde047;
+  text-shadow: 0 0 14px rgba(253, 224, 71, 0.9), 0 2px 3px rgba(0,0,0,0.5);
+}
+
+.stage-clear-overlay.show .stage-clear-stars .star:nth-child(1) { animation-delay: 0.15s; }
+.stage-clear-overlay.show .stage-clear-stars .star:nth-child(2) { animation-delay: 0.35s; }
+.stage-clear-overlay.show .stage-clear-stars .star:nth-child(3) { animation-delay: 0.55s; }
+
+@keyframes star-pop {
+  0%   { transform: scale(0) rotate(-30deg); opacity: 0; }
+  70%  { transform: scale(1.3) rotate(8deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+/* คอนเฟตติ้ฉลองตอนผ่านด่าน */
+.confetti-piece {
+  position: absolute;
+  top: -20px;
+  width: 10px;
+  height: 14px;
+  z-index: 11;
+  animation: confetti-fall linear forwards;
+}
+
+@keyframes confetti-fall {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(115vh) rotate(540deg); opacity: 0.9; }
+}

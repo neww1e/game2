@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>SpellQuest - Rescue the Princess</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===================== ฉากเริ่มเกม ===================== -->
+  <div id="scene-start" class="scene scene-start active">
+    <button id="exit-btn" class="icon-btn icon-btn-right" title="ออกจากเกม">⏻</button>
+    <button id="start-btn" class="pixel-btn">START GAME</button>
+  </div>
+
+  <!-- ===================== คัตซีนเปิดเรื่อง (วิดิโอ) ===================== -->
+  <div id="scene-intro" class="scene scene-cutscene">
+    <button class="cutscene-skip" data-skip-target="scene-map">ข้ามฉาก ⏭</button>
+    <!-- วางไฟล์วิดิโอเปิดเรื่องไว้ที่ videos/intro.mp4 -->
+    <video id="intro-video" class="cutscene-video" src="videos/intro.mp4" playsinline></video>
+  </div>
+
+  <!-- ===================== ฉากเลือกด่าน (World Map) ===================== -->
+  <div id="scene-map" class="scene scene-map">
+    <div class="map-title-banner">WORLD MAP</div>
+    <div class="stage-path">
+      <button class="stage-node" data-stage="1" data-scene="forest">
+        <span class="stage-shield">1</span>
+      </button>
+      <button class="stage-node" data-stage="2" data-scene="city">
+        <span class="stage-shield">2</span>
+      </button>
+      <button class="stage-node" data-stage="3" data-scene="night">
+        <span class="stage-shield">3</span>
+      </button>
+      <button class="stage-node" data-stage="4" data-scene="desert">
+        <span class="stage-shield">4</span>
+      </button>
+      <button class="stage-node" data-stage="5" data-scene="castle">
+        <span class="stage-shield">5</span>
+      </button>
+    </div>
+    <button id="reset-progress-btn" class="reset-link">รีเซ็ตความคืบหน้า</button>
+  </div>
+
+  <!-- ===================== ด่าน 1 - ป่าและภูเขา ===================== -->
+  <div id="scene-forest" class="scene scene-forest">
+    <div class="scenery forest"></div>
+    <div class="battle-hud">
+      <div class="hearts"></div>
+    </div>
+    <div class="battle-field">
+      <div class="wizard-sprite"><div class="sprite-art"></div></div>
+      <div class="monster-sprite" data-monster="forest">
+        <div class="monster-hp-bar"><div class="monster-hp-fill"></div></div>
+        <div class="sprite-art"></div>
+      </div>
+    </div>
+    <div class="quiz-box">
+      <div class="time-bar"><div class="time-bar-fill"></div></div>
+      <div class="thai-word"></div>
+      <div class="answer-options">
+        <button class="answer-btn"></button>
+        <button class="answer-btn"></button>
+      </div>
+    </div>
+    <div class="stage-clear-overlay">
+      <div class="stage-clear-box">
+        <div class="stage-clear-title">ผ่านด่านสำเร็จ!</div>
+        <div class="stage-clear-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+        <button class="pixel-btn back-to-map-btn">กลับแผนที่</button>
+      </div>
+    </div>
+    <div class="stage-fail-overlay">
+      <div class="stage-clear-box">
+        <div class="stage-fail-title">พลังหมด...</div>
+        <button class="pixel-btn back-to-map-btn-fail">กลับแผนที่</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== ด่าน 2 - เมือง/หมู่บ้าน ===================== -->
+  <div id="scene-city" class="scene scene-city">
+    <div class="scenery city"></div>
+    <div class="battle-hud">
+      <div class="hearts"></div>
+    </div>
+    <div class="battle-field">
+      <div class="wizard-sprite"><div class="sprite-art"></div></div>
+      <div class="monster-sprite" data-monster="city">
+        <div class="monster-hp-bar"><div class="monster-hp-fill"></div></div>
+        <div class="sprite-art"></div>
+      </div>
+    </div>
+    <div class="quiz-box">
+      <div class="time-bar"><div class="time-bar-fill"></div></div>
+      <div class="thai-word"></div>
+      <div class="answer-options">
+        <button class="answer-btn"></button>
+        <button class="answer-btn"></button>
+      </div>
+    </div>
+    <div class="stage-clear-overlay">
+      <div class="stage-clear-box">
+        <div class="stage-clear-title">ผ่านด่านสำเร็จ!</div>
+        <div class="stage-clear-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+        <button class="pixel-btn back-to-map-btn">กลับแผนที่</button>
+      </div>
+    </div>
+    <div class="stage-fail-overlay">
+      <div class="stage-clear-box">
+        <div class="stage-fail-title">พลังหมด...</div>
+        <button class="pixel-btn back-to-map-btn-fail">กลับแผนที่</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== ด่าน 3 - ป่าผีสิง/กลางคืน ===================== -->
+  <div id="scene-night" class="scene scene-night">
+    <div class="scenery night"></div>
+    <div class="battle-hud">
+      <div class="hearts"></div>
+    </div>
+    <div class="battle-field">
+      <div class="wizard-sprite"><div class="sprite-art"></div></div>
+      <div class="monster-sprite" data-monster="night">
+        <div class="monster-hp-bar"><div class="monster-hp-fill"></div></div>
+        <div class="sprite-art"></div>
+      </div>
+    </div>
+    <div class="quiz-box">
+      <div class="time-bar"><div class="time-bar-fill"></div></div>
+      <div class="thai-word"></div>
+      <div class="answer-options">
+        <button class="answer-btn"></button>
+        <button class="answer-btn"></button>
+      </div>
+    </div>
+    <div class="stage-clear-overlay">
+      <div class="stage-clear-box">
+        <div class="stage-clear-title">ผ่านด่านสำเร็จ!</div>
+        <div class="stage-clear-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+        <button class="pixel-btn back-to-map-btn">กลับแผนที่</button>
+      </div>
+    </div>
+    <div class="stage-fail-overlay">
+      <div class="stage-clear-box">
+        <div class="stage-fail-title">พลังหมด...</div>
+        <button class="pixel-btn back-to-map-btn-fail">กลับแผนที่</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== ด่าน 4 - ทะเลทราย ===================== -->
+  <div id="scene-desert" class="scene scene-desert">
+    <div class="scenery desert"></div>
+    <div class="battle-hud">
+      <div class="hearts"></div>
+    </div>
+    <div class="battle-field">
+      <div class="wizard-sprite"><div class="sprite-art"></div></div>
+      <div class="monster-sprite" data-monster="desert">
+        <div class="monster-hp-bar"><div class="monster-hp-fill"></div></div>
+        <div class="sprite-art"></div>
+      </div>
+    </div>
+    <div class="quiz-box">
+      <div class="time-bar"><div class="time-bar-fill"></div></div>
+      <div class="thai-word"></div>
+      <div class="answer-options">
+        <button class="answer-btn"></button>
+        <button class="answer-btn"></button>
+      </div>
+    </div>
+    <div class="stage-clear-overlay">
+      <div class="stage-clear-box">
+        <div class="stage-clear-title">ผ่านด่านสำเร็จ!</div>
+        <div class="stage-clear-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+        <button class="pixel-btn back-to-map-btn">กลับแผนที่</button>
+      </div>
+    </div>
+    <div class="stage-fail-overlay">
+      <div class="stage-clear-box">
+        <div class="stage-fail-title">พลังหมด...</div>
+        <button class="pixel-btn back-to-map-btn-fail">กลับแผนที่</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== ด่าน 5 - ปราสาท (ด่านสุดท้าย) ===================== -->
+  <div id="scene-castle" class="scene scene-castle">
+    <div class="scenery castle"></div>
+    <div class="battle-hud">
+      <div class="hearts"></div>
+    </div>
+    <div class="battle-field">
+      <div class="wizard-sprite"><div class="sprite-art"></div></div>
+      <div class="monster-sprite" data-monster="castle">
+        <div class="monster-hp-bar"><div class="monster-hp-fill"></div></div>
+        <div class="sprite-art"></div>
+      </div>
+    </div>
+    <div class="quiz-box">
+      <div class="time-bar"><div class="time-bar-fill"></div></div>
+      <div class="thai-word"></div>
+      <div class="answer-options">
+        <button class="answer-btn"></button>
+        <button class="answer-btn"></button>
+      </div>
+    </div>
+    <div class="stage-clear-overlay">
+      <div class="stage-clear-box">
+        <div class="stage-clear-title">ผ่านด่านสำเร็จ!</div>
+        <div class="stage-clear-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+        <button class="pixel-btn back-to-map-btn">กลับแผนที่</button>
+      </div>
+    </div>
+    <div class="stage-fail-overlay">
+      <div class="stage-clear-box">
+        <div class="stage-fail-title">พลังหมด...</div>
+        <button class="pixel-btn back-to-map-btn-fail">กลับแผนที่</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== คัตซีนจบเรื่อง (วิดิโอ) ===================== -->
+  <div id="scene-outro" class="scene scene-cutscene">
+    <button class="cutscene-skip" data-skip-target="scene-start">ข้ามฉาก ⏭</button>
+    <!-- วางไฟล์วิดิโอจบเรื่องไว้ที่ videos/outro.mp4 -->
+    <video id="outro-video" class="cutscene-video" src="videos/outro.mp4" playsinline></video>
+    <button id="outro-restart-btn" class="pixel-btn pixel-btn-small">กลับหน้าหลัก</button>
+  </div>
+
+<script src="script.js"></script>
+</body>
+</html>
