@@ -21,7 +21,7 @@
 ## 📄 Game Document
 
 ### Game Title
-*SpellQuest* (in-game title screen: "Spell Caster") — Help the wizard battle monsters and rescue the princess by casting the right word!
+Spell Caster — Help the wizard battle monsters and rescue the princess by casting the right word!
 
 ### Target Learners
 Beginner-level Thai-speaking English learners (suitable for lower-secondary school students or adult beginners / A1 level). The game assumes learners can already read basic English words but are still building vocabulary recognition speed and confidence — no prior gameplay instruction from a classmate or teacher is needed to play.
@@ -59,7 +59,7 @@ This loop repeats across 5 stages of increasing thematic variety, giving players
 - *Progress feedback:* a combo badge ("Combo x3!") appears for answer streaks; a time-bar glow warns when time is running low; a 1–3 star rating and confetti celebration appear on stage clear, giving players a clear sense of performance, not just pass/fail.
 
 ### AI / Tool Usage Disclosure
-- *Claude (Anthropic)* was used throughout development to: debug and fix gameplay logic (answer-checking, monster-approach timing, heart/combo tracking), implement new feedback features (combo badges, screen shake, floating damage text, star-rating system, confetti celebration), process and composite the character sprite-sheet animations from source art frames, and draft this documentation.
-- *[Group to fill in]:* original game concept and narrative framing, the Thai–English vocabulary word lists and their accuracy review, visual/art direction choices, and overall testing/playtesting were the group's own work.
+- **ChatGPT (OpenAI)** Brainstormed the game concept and defined game details (storyline, gameplay, level system), and generated the background images for the title screen and Stages 1-5.
+- **Claude (Anthropic)** Refined the game rules and storyline, structured the report, recommended development tools, wrote the prototype code in HTML/CSS/JavaScript (typing system, health system, stage system, scene switching), and explained how to run the project in VS Code.
+- **Google Gemini (video generation)** Generated video/animation content for the game (specify which part, e.g., the princess rescue ending).
 
-(Please adjust the attribution line above to precisely reflect which parts of the project were done independently vs. with AI assistance.)
