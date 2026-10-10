@@ -54,9 +54,14 @@ This lets a teacher assign the game to reinforce a specific thematic word list, 
 This loop repeats across 5 stages of increasing thematic variety, giving players a short, replayable feedback cycle (seconds per word) nested inside a longer progression goal (clearing all 5 stages).
 
 ### Feedback to the Player
-- *Correctness:* answer buttons flash green (correct) or red (wrong) immediately on click.
-- *Consequence feedback:* correct answers visibly damage the monster's HP bar; wrong/timeout answers trigger a screen shake, a red impact flash on the wizard, and a floating "-1" indicator so the cause of the heart loss is unambiguous.
-- *Progress feedback:* a combo badge ("Combo x3!") appears for answer streaks; a time-bar glow warns when time is running low; a 1–3 star rating and confetti celebration appear on stage clear, giving players a clear sense of performance, not just pass/fail.
+- Answer Response: Click to select an answer; the choice button will flash green when correct, and flash red when incorrect.
+- **Gameplay Impact**
+- *Correct Answer:* The monster's health bar (HP) noticeably decreases.
+- *Wrong Answer / Time Out:* The screen shakes, accompanied by a red light flash striking the wizard and a floating "-1 " message to instantly emphasize the cause of losing a heart to the player.
+- **Progress & Achievement**
+- A combo notification badge (e.g., "Combo x3!") appears when answering correctly in a row.
+- A timer bar warns when time is running out.
+- Upon clearing a stage, the screen summarizes the 1–3 star score with a confetti celebration effect, ensuring players clearly understand their level of achievement beyond a simple pass or fail result.
 
 ### AI / Tool Usage Disclosure
 - **ChatGPT (OpenAI)** Brainstormed the game concept and defined game details (storyline, gameplay, level system), and generated the background images for the title screen and Stages 1-5.
